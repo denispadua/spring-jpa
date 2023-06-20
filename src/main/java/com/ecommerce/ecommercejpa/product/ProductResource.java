@@ -1,6 +1,7 @@
 package com.ecommerce.ecommercejpa.product;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,13 +22,11 @@ public class ProductResource {
     
     @GetMapping("/")
     public ResponseEntity<Object> getProducts(){
-        List<ProductModel> lsProduct = service.getProducts();
-        return ResponseHandler.response(lsProduct,HttpStatus.CREATED);
+        return ResponseHandler.response(service.getProducts(), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable Long id){
-        ProductModel product = service.getProductById(id);
-        return ResponseHandler.response(product,HttpStatus.CREATED);
+        return ResponseHandler.response(service.getProductById(id), HttpStatus.CREATED);
     }
 }
