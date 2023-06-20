@@ -11,7 +11,6 @@ import jakarta.persistence.Table;
 @Table(name = "category")
 public class CategoryModel {
     @Id
-    @Column(name = "product_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @Column(name = "category_name")
