@@ -14,10 +14,10 @@ public class ProductService {
     private ProductRepository repository;
 
     public List<ProductModel> getProducts(){
-        Iterable<ProductModel> data =  repository.findAll();
-        List<ProductModel> lsData = new ArrayList<ProductModel>();
-        data.forEach(lsData::add);
-        return lsData;
+        Iterable<ProductModel> result =  repository.findAll();
+        List<ProductModel> lsProduct = new ArrayList<ProductModel>();
+        result.forEach(lsProduct::add);
+        return lsProduct;
     }
 
     public ProductModel getProductById(Long id){
