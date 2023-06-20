@@ -1,7 +1,7 @@
 package com.ecommerce.ecommercejpa.category;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 
-public interface CategoryRepository extends CrudRepository<CategoryModel, Long>{
+public interface CategoryRepository extends ListCrudRepository<CategoryModel, Long>{
 
 }
