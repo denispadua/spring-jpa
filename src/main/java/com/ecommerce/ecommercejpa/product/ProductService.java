@@ -1,6 +1,7 @@
 package com.ecommerce.ecommercejpa.product;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class ProductService {
         return repository.findAll();
     }
 
-    public ProductModel getProductById(Long id){
-        return repository.findById(id).orElse(new ProductModel());
+    public ProductModel getProductById(Long id) throws NoSuchElementException{
+        return repository.findById(id).get();
     }
 }
