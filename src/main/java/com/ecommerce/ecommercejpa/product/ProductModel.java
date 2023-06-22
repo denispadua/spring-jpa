@@ -3,6 +3,7 @@ package com.ecommerce.ecommercejpa.product;
 import java.math.BigDecimal;
 
 import com.ecommerce.ecommercejpa.category.CategoryModel;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,6 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "product")
+@JsonIgnoreProperties(value={"id"}, allowGetters = true)
 public class ProductModel {
     
     @Id
@@ -30,7 +32,7 @@ public class ProductModel {
     private String description;
     @Column(name = "product_price")
     private BigDecimal price;
-    @ManyToOne(cascade=CascadeType.PERSIST)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="category_id")
     private CategoryModel category;
     
