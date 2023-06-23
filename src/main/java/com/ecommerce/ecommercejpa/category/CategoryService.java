@@ -7,7 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CategoryService {
+public class CategoryService implements CategoryServiceInterface{
     
     private final CategoryRepository repository;
 

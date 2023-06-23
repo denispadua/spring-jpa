@@ -7,7 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductService {
+public class ProductService implements ProductServiceInterface{
     
     private final ProductRepository repository;
 
