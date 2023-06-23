@@ -26,7 +26,7 @@ public class ProductResource {
     
     @GetMapping("/")
     public ResponseEntity<Object> getProducts(){
-        return ResponseHandler.response(service.getProducts(), HttpStatus.CREATED);
+        return ResponseHandler.response(service.getProducts(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -26,7 +26,7 @@ public class CategoryResource {
 
     @GetMapping("/")
     public ResponseEntity<Object> getProducts(){
-        return ResponseHandler.response(service.getCategories(), HttpStatus.CREATED);
+        return ResponseHandler.response(service.getCategories(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
