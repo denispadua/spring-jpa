@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 public class CategoryModel {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(updatable = false)
     private Long id;
     @Column(name = "category_name")
     private String name;
