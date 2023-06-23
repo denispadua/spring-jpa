@@ -21,9 +21,12 @@ import jakarta.validation.Valid;
 @RequestMapping("/product")
 public class ProductResource {
 
-    @Autowired
-    private ProductService service;
+    private final ProductService service;
     
+    public ProductResource(ProductService service){
+        this.service = service;
+    }
+
     @GetMapping("/")
     public ResponseEntity<Object> getProducts(){
         return ResponseHandler.response(service.getProducts(), HttpStatus.OK);

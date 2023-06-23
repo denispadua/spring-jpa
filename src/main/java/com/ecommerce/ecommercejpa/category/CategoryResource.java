@@ -2,7 +2,6 @@ package com.ecommerce.ecommercejpa.category;
 
 import java.util.NoSuchElementException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +20,11 @@ import jakarta.validation.Valid;
 @RequestMapping("/category")
 public class CategoryResource {
     
-    @Autowired
-    private CategoryService service;
+    private final CategoryService service;
+
+    public CategoryResource(CategoryService service){
+        this.service = service;
+    }
 
     @GetMapping("/")
     public ResponseEntity<Object> getProducts(){
