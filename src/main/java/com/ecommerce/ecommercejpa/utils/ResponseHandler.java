@@ -12,12 +12,14 @@ public class ResponseHandler {
     public static <T> ResponseEntity<Object> response(List<T> lsData, HttpStatus status){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("data", lsData);
+        map.put("status", status.value());
         return new ResponseEntity<Object>(map, status);
     }
 
     public static <T> ResponseEntity<Object> response(T data, HttpStatus status){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("data", data);
+        map.put("status", status.value());
         return new ResponseEntity<Object>(map, status);
     }
 }
