@@ -22,4 +22,11 @@ public class ResponseHandler {
         map.put("status", status.value());
         return new ResponseEntity<Object>(map, status);
     }
+
+    public static <T> ResponseEntity<Object> response(String data, HttpStatus status){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("data", data);
+        map.put("status", status.value());
+        return new ResponseEntity<Object>(map, status);
+    }
 }
