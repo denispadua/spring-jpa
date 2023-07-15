@@ -1,6 +1,5 @@
 package com.ecommerce.ecommercejpa.category;
 
-import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.ecommerce.ecommercejpa.utils.ResponseHandler;
 
@@ -33,19 +31,11 @@ public class CategoryResource {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable Long id){
-        try {
-            return ResponseHandler.response(service.getCategoryById(id), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
-        }
+        return ResponseHandler.response(service.getCategoryById(id), HttpStatus.OK);
     }
 
     @PostMapping("/")
     public ResponseEntity<Object> createProduct(@RequestBody @Valid CategoryModel jsonProduct){
-        try {
-            return ResponseHandler.response(service.createCategory(jsonProduct), HttpStatus.CREATED);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unable to create a category");
-        }
+        return ResponseHandler.response(service.createCategory(jsonProduct), HttpStatus.CREATED);
     }
 }
