@@ -25,19 +25,11 @@ public class CustomerResource {
 
     @PostMapping("/register")
     public ResponseEntity<Object> createCustomer(@RequestBody CustomerModel customer){
-        try {
-            return ResponseHandler.response(service.createCustomer(customer), HttpStatus.OK);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());        
-        }
+        return ResponseHandler.response(service.createCustomer(customer), HttpStatus.OK);
     }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody CustomerLoginRequest customer){
-        try {
-            return ResponseHandler.response(service.getCustomerByEmail(customer.getEmail()), HttpStatus.OK);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
-        }
+        return ResponseHandler.response(service.login(customer.getEmail()), HttpStatus.OK);
     }
 }

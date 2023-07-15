@@ -2,6 +2,9 @@ package com.ecommerce.ecommercejpa.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
+import javax.management.openmbean.KeyAlreadyExistsException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,4 +35,17 @@ public class RestExceptionHandler {
         Map<String, Object> response = createResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(KeyAlreadyExistsException.class)
+    public ResponseEntity<Object> handleKeyAlreadyExistsException(KeyAlreadyExistsException ex){
+        Map<String, Object> response = createResponse(ex.getMessage(), HttpStatus.CONFLICT.value());
+        return new ResponseEntity<Object>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException ex){
+        Map<String, Object> response = createResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
+    }
+    
 }
