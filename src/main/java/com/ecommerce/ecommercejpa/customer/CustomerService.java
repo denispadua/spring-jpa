@@ -6,15 +6,19 @@ import java.util.Optional;
 import javax.management.openmbean.KeyAlreadyExistsException;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerService {
     
     private final CustomerRepository repository;
+    
+    private final PasswordEncoder enconder;
 
-    public CustomerService(CustomerRepository repository){
+    public CustomerService(CustomerRepository repository, PasswordEncoder encoder){
         this.repository = repository;
+        this.enconder = encoder;
     }
 
     public CustomerModel getCustomerByCpf(String cpf){
@@ -30,6 +34,7 @@ public class CustomerService {
         if(c.isEmpty()){
             CustomerModel newCustomer = new CustomerModel();
             BeanUtils.copyProperties(customer, newCustomer);
+            newCustomer.setPassword(this.encryptPassword(newCustomer.getPassword()));
             return repository.save(newCustomer);
         }
         throw new KeyAlreadyExistsException("Customer already exist");
@@ -41,5 +46,9 @@ public class CustomerService {
             return "TOKEN XXXXX";
         }
         throw new NoSuchElementException("Customer not found");
+    }
+
+    public String encryptPassword(String password){
+        return enconder.encode(password);
     }
 }
