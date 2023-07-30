@@ -17,7 +17,6 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "product")
-@JsonIgnoreProperties(value={"id"}, allowGetters = true)
 public class ProductModel {
     
     @Id
@@ -32,6 +31,7 @@ public class ProductModel {
     private String description;
     @Column(name = "product_price")
     private BigDecimal price;
+    private Integer quantity;
     @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name="category_id")
     private CategoryModel category;
@@ -65,6 +65,12 @@ public class ProductModel {
     }
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+    public Integer getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
     public CategoryModel getCategory() {
         return category;
