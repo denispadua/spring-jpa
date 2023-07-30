@@ -9,6 +9,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.ecommercejpa.customer.dto.CustomerResponse;
+
 @Service
 public class CustomerService {
     
@@ -29,13 +31,13 @@ public class CustomerService {
         throw new NoSuchElementException("Customer not found");
     }
 
-    public CustomerModel createCustomer(CustomerModel customer){
+    public CustomerResponse createCustomer(CustomerModel customer){
         Optional<CustomerModel> c = repository.findByCpf(customer.getCpf());
         if(c.isEmpty()){
             CustomerModel newCustomer = new CustomerModel();
             BeanUtils.copyProperties(customer, newCustomer);
             newCustomer.setPassword(this.encryptPassword(newCustomer.getPassword()));
-            return repository.save(newCustomer);
+            return this.customerDataToResponse(repository.save(newCustomer));
         }
         throw new KeyAlreadyExistsException("Customer already exist");
     }
@@ -50,5 +52,11 @@ public class CustomerService {
 
     public String encryptPassword(String password){
         return enconder.encode(password);
+    }
+
+    public CustomerResponse customerDataToResponse(CustomerModel customerData){
+        CustomerResponse customerResponse = new CustomerResponse();
+        BeanUtils.copyProperties(customerData, customerResponse);
+        return customerResponse;
     }
 }
