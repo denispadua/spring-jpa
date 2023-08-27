@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ecommerce.ecommercejpa.order.dto.Item;
+import com.ecommerce.ecommercejpa.order.dto.OrderRequest;
 import com.ecommerce.ecommercejpa.utils.ResponseHandler;
 
 @RestController
@@ -18,17 +20,23 @@ import com.ecommerce.ecommercejpa.utils.ResponseHandler;
 public class OrderResource {
     
     @Autowired
+    private OrderService service;
+
+    @Autowired
     private OrderRepository repository;
     
     @GetMapping("/")
     public ResponseEntity<Object> getOrders(){
         List<OrderModel> orders = repository.findAll();
-        return ResponseHandler.response(orders, HttpStatus.OK);
+        return ResponseHandler.response(orders, HttpStatus.OK, null);
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> CreateOrders(@RequestBody OrderModel newOrder){
-        OrderModel order = repository.save(newOrder);
-        return ResponseHandler.response(order, HttpStatus.OK);
+    public ResponseEntity<Object> CreateOrders(@RequestBody OrderRequest newOrder){
+        List<Item> itemsUnavailable = service.createOrder(newOrder.getItems(), newOrder.getCustomer());
+        if(itemsUnavailable.size() > 0){
+            return ResponseHandler.response(itemsUnavailable, HttpStatus.OK, "Alguns itens da sua compra não estão mais disponíveis, você pode tentar comprar produtos semelhantes!");
+        }
+        return ResponseHandler.response("Sua ordem foi finalizado com sucesso, o pagamento está em processamento!", HttpStatus.OK);
     }
 }
