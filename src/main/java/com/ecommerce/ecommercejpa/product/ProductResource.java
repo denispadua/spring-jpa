@@ -28,13 +28,13 @@ public class ProductResource {
 
     @GetMapping("/")
     public ResponseEntity<Object> getProducts(){
-        return ResponseHandler.response(service.getProducts(), HttpStatus.OK);
+        return ResponseHandler.response(service.getProducts(), HttpStatus.OK, null);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable Long id){
         try {
-            return ResponseHandler.response(service.getProductById(id), HttpStatus.OK);
+            return ResponseHandler.response(service.getProductById(id), HttpStatus.OK, null);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
@@ -43,7 +43,7 @@ public class ProductResource {
     @PostMapping("/")
     public ResponseEntity<Object> createProduct(@RequestBody @Valid ProductModel jsonProduct){
         try {
-            return ResponseHandler.response(service.createProduct(jsonProduct), HttpStatus.CREATED);
+            return ResponseHandler.response(service.createProduct(jsonProduct), HttpStatus.CREATED, null);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unable to create a user");
         }

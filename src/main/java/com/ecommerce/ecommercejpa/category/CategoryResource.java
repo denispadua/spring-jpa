@@ -26,16 +26,16 @@ public class CategoryResource {
 
     @GetMapping("/")
     public ResponseEntity<Object> getProducts(){
-        return ResponseHandler.response(service.getCategories(), HttpStatus.OK);
+        return ResponseHandler.response(service.getCategories(), HttpStatus.OK, null);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable Long id){
-        return ResponseHandler.response(service.getCategoryById(id), HttpStatus.OK);
+        return ResponseHandler.response(service.getCategoryById(id), HttpStatus.OK, null);
     }
 
     @PostMapping("/")
     public ResponseEntity<Object> createProduct(@RequestBody @Valid CategoryModel jsonProduct){
-        return ResponseHandler.response(service.createCategory(jsonProduct), HttpStatus.CREATED);
+        return ResponseHandler.response(service.createCategory(jsonProduct), HttpStatus.CREATED, null);
     }
 }
