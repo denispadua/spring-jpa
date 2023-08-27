@@ -33,7 +33,7 @@ public class OrderService {
         order.setCustomer(customer);
         items.forEach(item -> {
             if(isItemAvailable(item)){
-                productService.updateProduct(item.getProduct().getId(), item.getQuantity());
+                productService.updateProductQuantity(item.getProduct().getId(), item.getQuantity());
                 order.setPrice(item.getPrice());
                 order.setProduct(item.getProduct());
                 order.setQuantity(item.getQuantity());
