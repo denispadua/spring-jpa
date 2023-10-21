@@ -17,11 +17,11 @@ public class CategoryService implements CategoryServiceInterface{
     public CategoryService(CategoryRepository repository){
         this.repository = repository;
     }
-
+    @Override
     public List<CategoryModel> getCategories(){
         return repository.findAll();
     }
-
+    @Override
     public CategoryModel getCategoryById(Long id){
         Optional<CategoryModel> result = repository.findById(id);
         if(result.isEmpty()){
@@ -29,7 +29,7 @@ public class CategoryService implements CategoryServiceInterface{
         }
         return result.get();
     }
-
+    @Override
     public CategoryModel createCategory(CategoryModel categoryJson){
         Optional<CategoryModel> result = repository.findById(categoryJson.getId());
         if(result.isPresent()){

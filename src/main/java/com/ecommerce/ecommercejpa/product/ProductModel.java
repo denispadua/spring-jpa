@@ -3,7 +3,6 @@ package com.ecommerce.ecommercejpa.product;
 import java.math.BigDecimal;
 
 import com.ecommerce.ecommercejpa.category.CategoryModel;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

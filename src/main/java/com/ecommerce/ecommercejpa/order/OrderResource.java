@@ -34,7 +34,7 @@ public class OrderResource {
     @PostMapping("/")
     public ResponseEntity<Object> CreateOrders(@RequestBody OrderRequest newOrder){
         List<Item> itemsUnavailable = service.createOrder(newOrder.getItems(), newOrder.getCustomer());
-        if(itemsUnavailable.size() > 0){
+        if(!itemsUnavailable.isEmpty()){
             return ResponseHandler.response(itemsUnavailable, HttpStatus.OK, "Alguns itens da sua compra não estão mais disponíveis, você pode tentar comprar produtos semelhantes!");
         }
         return ResponseHandler.response("Sua ordem foi finalizado com sucesso, o pagamento está em processamento!", HttpStatus.OK);

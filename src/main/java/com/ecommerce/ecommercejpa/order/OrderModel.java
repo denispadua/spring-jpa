@@ -1,7 +1,6 @@
 package com.ecommerce.ecommercejpa.order;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import com.ecommerce.ecommercejpa.customer.CustomerModel;
 import com.ecommerce.ecommercejpa.product.ProductModel;
