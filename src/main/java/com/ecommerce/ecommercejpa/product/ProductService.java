@@ -15,15 +15,15 @@ public class ProductService implements ProductServiceInterface{
     public ProductService(ProductRepository repository){
         this.repository = repository;
     }
-
+    @Override
     public List<ProductModel> getProducts(){
         return repository.findAll();
     }
-
+    @Override
     public ProductModel getProductById(Long id) throws NoSuchElementException{
         return repository.findById(id).get();
     }
-
+    @Override
     public ProductModel createProduct(ProductModel productJson){
         ProductModel newProduct = new ProductModel();
         BeanUtils.copyProperties(productJson, newProduct);
