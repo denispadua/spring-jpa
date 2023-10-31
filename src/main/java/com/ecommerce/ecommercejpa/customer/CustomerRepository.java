@@ -10,4 +10,6 @@ public interface CustomerRepository extends ListCrudRepository<CustomerModel, Lo
     Optional<CustomerModel> findByCpf(String cpf);
 
     Optional<CustomerModel> findByEmail(String email);
+
+    Optional<CustomerModel> findByUsername(String username);
 }

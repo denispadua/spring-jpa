@@ -1,32 +1,55 @@
 package com.ecommerce.ecommercejpa.customer;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.ecommercejpa.customer.dto.CustomerLoginRequest;
+import com.ecommerce.ecommercejpa.utils.JwtUtils;
 import com.ecommerce.ecommercejpa.utils.ResponseHandler;
 
 @RestController
 @RequestMapping("/customer")
 public class CustomerResource {
-    
-    private final CustomerService service;
+    @Autowired
+    AuthenticationManager authenticationManager;
 
-    public CustomerResource(CustomerService service){
+    @Autowired
+    JwtUtils jwtUtils;
+
+    private final CustomerService service;
+    private final PasswordEncoder enconder;
+
+    public CustomerResource(CustomerService service, PasswordEncoder enconder){
         this.service = service;
+        this.enconder = enconder;
     }
 
     @PostMapping("/register")
     public ResponseEntity<Object> createCustomer(@RequestBody CustomerModel customer){
+        customer.setPassword(enconder.encode(customer.getPassword()));
         return ResponseHandler.response(service.createCustomer(customer), HttpStatus.OK, null);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody CustomerLoginRequest customer){
-        return ResponseHandler.response(service.login(customer.getEmail()), HttpStatus.OK);
+    public String login(@RequestBody CustomerLoginRequest customer){
+        
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(customer.getUsername(), customer.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+        
+        return jwt;
+        // return ResponseHandler.response(service.login(customer.getEmail()), HttpStatus.OK);
     }
 }

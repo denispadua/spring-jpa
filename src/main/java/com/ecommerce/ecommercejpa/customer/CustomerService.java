@@ -6,21 +6,24 @@ import java.util.Optional;
 import javax.management.openmbean.KeyAlreadyExistsException;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.ecommercejpa.customer.dto.CustomerResponse;
 
 @Service
-public class CustomerService {
+@Configurable
+public class CustomerService implements  UserDetailsService{
     
     private final CustomerRepository repository;
-    
-    private final PasswordEncoder enconder;
 
-    public CustomerService(CustomerRepository repository, PasswordEncoder encoder){
+
+    public CustomerService(CustomerRepository repository){
         this.repository = repository;
-        this.enconder = encoder;
     }
 
     public CustomerModel getCustomerByCpf(String cpf){
@@ -36,7 +39,7 @@ public class CustomerService {
         if(c.isEmpty()){
             CustomerModel newCustomer = new CustomerModel();
             BeanUtils.copyProperties(customer, newCustomer);
-            newCustomer.setPassword(this.encryptPassword(newCustomer.getPassword()));
+            // newCustomer.setPassword(this.encryptPassword(newCustomer.getPassword()));
             return this.customerDataToResponse(repository.save(newCustomer));
         }
         throw new KeyAlreadyExistsException("Customer already exist");
@@ -50,13 +53,19 @@ public class CustomerService {
         throw new NoSuchElementException("Customer not found");
     }
 
-    public String encryptPassword(String password){
-        return enconder.encode(password);
-    }
+    // public String encryptPassword(String password){
+    //     return enconder.encode(password);
+    // }
 
     public CustomerResponse customerDataToResponse(CustomerModel customerData){
         CustomerResponse customerResponse = new CustomerResponse();
         BeanUtils.copyProperties(customerData, customerResponse);
         return customerResponse;
+    }
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<CustomerModel> user = repository.findByEmail(email);
+        return user.get();
     }
 }
