@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +21,11 @@ import com.ecommerce.ecommercejpa.customer.dto.CustomerResponse;
 public class CustomerService implements  UserDetailsService{
     
     private final CustomerRepository repository;
+    private final PasswordEncoder enconder;
 
-
-    public CustomerService(CustomerRepository repository){
+    public CustomerService(CustomerRepository repository, PasswordEncoder enconder){
         this.repository = repository;
+        this.enconder = enconder;
     }
 
     public CustomerModel getCustomerByCpf(String cpf){
@@ -39,7 +41,7 @@ public class CustomerService implements  UserDetailsService{
         if(c.isEmpty()){
             CustomerModel newCustomer = new CustomerModel();
             BeanUtils.copyProperties(customer, newCustomer);
-            // newCustomer.setPassword(this.encryptPassword(newCustomer.getPassword()));
+            newCustomer.setPassword(this.encryptPassword(newCustomer.getPassword()));
             return this.customerDataToResponse(repository.save(newCustomer));
         }
         throw new KeyAlreadyExistsException("Customer already exist");
@@ -53,9 +55,9 @@ public class CustomerService implements  UserDetailsService{
         throw new NoSuchElementException("Customer not found");
     }
 
-    // public String encryptPassword(String password){
-    //     return enconder.encode(password);
-    // }
+    public String encryptPassword(String password){
+        return enconder.encode(password);
+    }
 
     public CustomerResponse customerDataToResponse(CustomerModel customerData){
         CustomerResponse customerResponse = new CustomerResponse();

@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,16 +26,13 @@ public class CustomerResource {
     JwtUtils jwtUtils;
 
     private final CustomerService service;
-    private final PasswordEncoder enconder;
-
-    public CustomerResource(CustomerService service, PasswordEncoder enconder){
+    
+    public CustomerResource(CustomerService service){
         this.service = service;
-        this.enconder = enconder;
     }
 
     @PostMapping("/register")
     public ResponseEntity<Object> createCustomer(@RequestBody CustomerModel customer){
-        customer.setPassword(enconder.encode(customer.getPassword()));
         return ResponseHandler.response(service.createCustomer(customer), HttpStatus.OK, null);
     }
 
