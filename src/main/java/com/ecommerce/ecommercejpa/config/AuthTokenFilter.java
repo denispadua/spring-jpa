@@ -2,7 +2,6 @@ package com.ecommerce.ecommercejpa.config;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,11 +25,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     private final CustomerService customerService;
 
-    @Value("${secret}")
-    private String jwtSecret;
+    private final JwtSecretService jwtToken;
 
-    public AuthTokenFilter(CustomerService customerService) {
+    public AuthTokenFilter(CustomerService customerService, JwtSecretService jwtToken) {
         this.customerService = customerService;
+        this.jwtToken = jwtToken;
     }
 
     @Override
@@ -59,7 +58,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     }
 
     public String getUserNameFromJwtToken(String token) {
-        Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
+        Algorithm algorithm = Algorithm.HMAC256(jwtToken.getJwtSecret());
         JWTVerifier verifier = JWT.require(algorithm).build();
 
         DecodedJWT decodedJWT = verifier.verify(token);
@@ -68,7 +67,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
+            Algorithm algorithm = Algorithm.HMAC256(jwtToken.getJwtSecret());
             JWTVerifier verifier = JWT.require(algorithm).build();
             verifier.verify(authToken);
             return true;

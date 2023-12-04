@@ -3,6 +3,7 @@ package com.ecommerce.ecommercejpa.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -19,6 +20,8 @@ public class SecurityConfig {
 
     @Autowired
     CustomerService customerService;
+    @Autowired
+    JwtSecretService jwtToken;
 
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -26,7 +29,7 @@ public class SecurityConfig {
     }
 
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter(customerService);
+        return new AuthTokenFilter(customerService, jwtToken);
     }
 
     @Bean
@@ -59,6 +62,7 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> 
           auth.requestMatchers("/customer/**").permitAll()
+          .requestMatchers(HttpMethod.POST,"/category/**").hasAuthority("user")
               .anyRequest().authenticated()
         );
 
