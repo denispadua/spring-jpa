@@ -2,7 +2,6 @@ package com.ecommerce.ecommercejpa.order;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +18,13 @@ import com.ecommerce.ecommercejpa.utils.ResponseHandler;
 @RequestMapping("/order")
 public class OrderResource {
     
-    @Autowired
-    private OrderService service;
+    private final OrderService service;
+    private final OrderRepository repository;
 
-    @Autowired
-    private OrderRepository repository;
+    public OrderResource(OrderService service, OrderRepository repository){
+        this.service = service;
+        this.repository = repository;
+    }
     
     @GetMapping("/")
     public ResponseEntity<Object> getOrders(){
@@ -32,11 +33,11 @@ public class OrderResource {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> CreateOrders(@RequestBody OrderRequest newOrder){
+    public ResponseEntity<Object> createOrders(@RequestBody OrderRequest newOrder){
         List<Item> itemsUnavailable = service.createOrder(newOrder.getItems(), newOrder.getCustomer());
         if(!itemsUnavailable.isEmpty()){
             return ResponseHandler.response(itemsUnavailable, HttpStatus.OK, "Alguns itens da sua compra não estão mais disponíveis, você pode tentar comprar produtos semelhantes!");
         }
-        return ResponseHandler.response("Sua ordem foi finalizado com sucesso, o pagamento está em processamento!", HttpStatus.OK);
+        return ResponseHandler.response(null, HttpStatus.OK, "Sua ordem foi finalizado com sucesso, o pagamento está em processamento!");
     }
 }

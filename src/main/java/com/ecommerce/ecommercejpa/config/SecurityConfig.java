@@ -1,6 +1,5 @@
 package com.ecommerce.ecommercejpa.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,10 +17,13 @@ import com.ecommerce.ecommercejpa.customer.CustomerService;
 @Configuration
 public class SecurityConfig {
 
-    @Autowired
-    CustomerService customerService;
-    @Autowired
-    JwtSecretService jwtToken;
+    private final CustomerService customerService;
+    private final JwtSecretService jwtToken;
+
+    public SecurityConfig(CustomerService customerService, JwtSecretService jwtToken){
+        this.customerService = customerService;
+        this.jwtToken = jwtToken;
+    }
 
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -48,16 +50,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // http.authorizeHttpRequests(authz -> authz
-        //         .anyRequest()
-        //         .permitAll());
-        // http.authorizeHttpRequests(req -> req.requestMatchers("/api/auth/**").permitAll());
-        // http.csrf(cors -> cors.disable());
-        // http.cors(httpSecurityCorsConfigurer
-        //         -> httpSecurityCorsConfigurer.configurationSource(request
-        //                 -> new CorsConfiguration().applyPermitDefaultValues()
-        //         )
-        // );
         http.csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> 

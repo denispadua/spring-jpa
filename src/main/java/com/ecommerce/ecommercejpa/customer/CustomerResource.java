@@ -1,6 +1,5 @@
 package com.ecommerce.ecommercejpa.customer;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,18 +19,15 @@ import com.ecommerce.ecommercejpa.utils.ResponseHandler;
 @RestController
 @RequestMapping("/customer")
 public class CustomerResource {
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    JwtUtils jwtUtils;
 
     private final CustomerService service;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
 
-
-    public CustomerResource(CustomerService service){
+    public CustomerResource(CustomerService service, AuthenticationManager authenticationManager, JwtUtils jwtUtils){
         this.service = service;
-
+        this.authenticationManager = authenticationManager;
+        this.jwtUtils = jwtUtils;
     }
 
     @PostMapping("/register")
@@ -40,13 +36,11 @@ public class CustomerResource {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody CustomerLoginRequest customer){
+    public ResponseEntity<Object> login(@RequestBody CustomerLoginRequest customer){
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(customer.getUsername(), customer.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-        
-        return jwt;
+
+        return ResponseHandler.response(jwtUtils.generateJwtToken(authentication), HttpStatus.OK, null);
     }
 }

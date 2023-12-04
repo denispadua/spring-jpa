@@ -18,7 +18,7 @@ import jakarta.validation.ValidationException;
 public class RestExceptionHandler {
 
     public Map<String, Object> createResponse(String message, Integer statusCode){
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("message", message);
         map.put("status", statusCode);
         return map;
@@ -27,25 +27,25 @@ public class RestExceptionHandler {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Object> handleBadRequestException(ResponseStatusException ex) {
         Map<String, Object> response = createResponse(ex.getReason(), ex.getStatusCode().value());
-        return new ResponseEntity<Object>(response, ex.getStatusCode());
+        return new ResponseEntity<>(response, ex.getStatusCode());
     }
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<Object> handleValidationException(ValidationException ex){
         Map<String, Object> response = createResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
-        return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(KeyAlreadyExistsException.class)
     public ResponseEntity<Object> handleKeyAlreadyExistsException(KeyAlreadyExistsException ex){
         Map<String, Object> response = createResponse(ex.getMessage(), HttpStatus.CONFLICT.value());
-        return new ResponseEntity<Object>(response, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException ex){
         Map<String, Object> response = createResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value());
-        return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
     
 }

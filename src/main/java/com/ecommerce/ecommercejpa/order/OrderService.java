@@ -3,7 +3,6 @@ package com.ecommerce.ecommercejpa.order;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.ecommercejpa.customer.Customer;
@@ -13,11 +12,13 @@ import com.ecommerce.ecommercejpa.product.ProductService;
 @Service
 public class OrderService {
 
-    @Autowired
-    private OrderRepository repository;
+    private final OrderRepository repository;
+    private final ProductService productService;
 
-    @Autowired
-    private ProductService productService;
+    public OrderService(OrderRepository repository, ProductService productService){
+        this.repository = repository;
+        this.productService = productService;
+    }
 
     public boolean isItemAvailable(Item item) {
         Integer quantity = repository.getProductQuantityById(item.getProduct().getId());

@@ -2,7 +2,6 @@ package com.ecommerce.ecommercejpa.utils;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +13,13 @@ import com.ecommerce.ecommercejpa.customer.Customer;
 @Component
 public class JwtUtils {
 
-        @Autowired
-        private JwtSecretService jwtSecret;
-        
-        public String generateJwtToken(Authentication authentication) {
+    private final JwtSecretService jwtSecret;
+
+    public JwtUtils(JwtSecretService jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
+
+    public String generateJwtToken(Authentication authentication) {
 
         Customer userPrincipal = (Customer) authentication.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getJwtSecret());
