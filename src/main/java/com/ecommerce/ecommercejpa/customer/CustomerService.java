@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.ecommercejpa.Role.Role;
 import com.ecommerce.ecommercejpa.Role.RoleEnum;
+import com.ecommerce.ecommercejpa.customer.dto.CustomerRegisterRequest;
 import com.ecommerce.ecommercejpa.customer.dto.CustomerResponse;
 
 @Service
@@ -36,32 +37,27 @@ public class CustomerService implements  UserDetailsService{
 
     public Customer getCustomerByCpf(String cpf){
         Optional<Customer> c = repository.findByCpf(cpf);
-        if(c.isPresent()){
-            return c.get();
-        }
-        throw new NoSuchElementException("Customer not found");
-    }
-
-    public CustomerResponse createCustomer(Customer customer){
-        Optional<Customer> c = repository.findByCpf(customer.getCpf());
         if(c.isEmpty()){
-            Customer newCustomer = new Customer();
-            BeanUtils.copyProperties(customer, newCustomer);
-            customer.getRoles().forEach(role ->{
-                newCustomer.getRole().add(new Role(RoleEnum.valueOf(role.toUpperCase()).getValue(), role));
-            });
-            newCustomer.setPassword(this.encryptPassword(newCustomer.getPassword()));
-            return this.customerDataToResponse(repository.save(newCustomer));
+            throw new NoSuchElementException("Customer not found");
         }
-        throw new KeyAlreadyExistsException("Customer already exist");
+        return c.get();
     }
 
-    public String login(String email){
-        Optional<Customer> customer = repository.findByEmail(email);
-        if(customer.isPresent()){
-            return "TOKEN XXXXX";
+    public CustomerResponse createCustomer(CustomerRegisterRequest customer){
+        Optional<Customer> c = repository.findByCpf(customer.getCpf());
+
+        if(c.isPresent()){
+            throw new KeyAlreadyExistsException("Customer already exist");
         }
-        throw new NoSuchElementException("Customer not found");
+
+        Customer newCustomer = new Customer();
+        BeanUtils.copyProperties(customer, newCustomer);
+        customer.getRoles().forEach(role ->
+            newCustomer.getRole().add(new Role(RoleEnum.valueOf(role.toUpperCase()).getValue(), role))
+        );
+        newCustomer.setPassword(this.encryptPassword(newCustomer.getPassword()));
+
+        return this.customerDataToResponse(repository.save(newCustomer));
     }
 
     public String encryptPassword(String password){
@@ -73,15 +69,22 @@ public class CustomerService implements  UserDetailsService{
         BeanUtils.copyProperties(customerData, customerResponse);
         return customerResponse;
     }
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Customer> user = repository.findByEmail(email);
-        Customer c = user.get();
-        List<GrantedAuthority> authorities = c.getRole().stream().map(role->
+        
+        if(user.isEmpty()){
+            throw new UsernameNotFoundException("User with email not found");
+        }
+
+        Customer customer = user.get();
+        List<GrantedAuthority> authorities = customer.getRole().stream().map(role->
             new SimpleGrantedAuthority(role.getName())
         ).collect(Collectors.toList());
-        c.setAuthorities(authorities);
-        return c;
+        customer.setAuthorities(authorities);
+
+        return customer;
     }
 }

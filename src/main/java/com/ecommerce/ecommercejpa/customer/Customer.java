@@ -36,16 +36,12 @@ public class Customer implements UserDetails {
     private String username;
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
+    
     @ManyToMany()
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> role = new HashSet<>();
-
-    @Transient
-    private Set<String> roles = new HashSet<>();
-
-
 
     public Long getId() {
         return id;
@@ -125,16 +121,6 @@ public class Customer implements UserDetails {
         this.authorities = authorities;
     }
 
-    public Set<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
-    
-
-
     public Set<Role> getRole() {
         return role;
     }
@@ -142,7 +128,4 @@ public class Customer implements UserDetails {
     public void setRole(Set<Role> role) {
         this.role = role;
     }
-
-
-
 }
