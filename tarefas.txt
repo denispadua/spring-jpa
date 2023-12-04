@@ -1,0 +1,5 @@
+- Fazer as permissões funcionarem
+- Escrever testes
+
+https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config
+https://www.baeldung.com/spring-security-method-security
