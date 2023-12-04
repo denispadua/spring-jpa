@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ecommerce.ecommercejpa.customer.CustomerModel;
+import com.ecommerce.ecommercejpa.customer.Customer;
 import com.ecommerce.ecommercejpa.order.dto.Item;
 import com.ecommerce.ecommercejpa.product.ProductService;
 
@@ -24,8 +24,8 @@ public class OrderService {
         return quantity >= item.getQuantity();
     }
 
-    public List<Item> createOrder(List<Item> items, CustomerModel customer) {
-        OrderModel order = new OrderModel();
+    public List<Item> createOrder(List<Item> items, Customer customer) {
+        Order order = new Order();
         List<Item> itemsUnavailable = new ArrayList<>();
         order.setCustomer(customer);
         items.forEach(item -> {

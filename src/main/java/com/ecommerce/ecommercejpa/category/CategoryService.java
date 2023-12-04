@@ -18,24 +18,24 @@ public class CategoryService implements CategoryServiceInterface{
         this.repository = repository;
     }
     @Override
-    public List<CategoryModel> getCategories(){
+    public List<Category> getCategories(){
         return repository.findAll();
     }
     @Override
-    public CategoryModel getCategoryById(Long id){
-        Optional<CategoryModel> result = repository.findById(id);
+    public Category getCategoryById(Long id){
+        Optional<Category> result = repository.findById(id);
         if(result.isEmpty()){
             throw new NoSuchElementException("Category not found");
         }
         return result.get();
     }
     @Override
-    public CategoryModel createCategory(CategoryModel categoryJson){
-        Optional<CategoryModel> result = repository.findById(categoryJson.getId());
+    public Category createCategory(Category categoryJson){
+        Optional<Category> result = repository.findById(categoryJson.getId());
         if(result.isPresent()){
             throw new KeyAlreadyExistsException("Category already exist");
         }
-        CategoryModel newCategory = new CategoryModel();
+        Category newCategory = new Category();
         BeanUtils.copyProperties(categoryJson, newCategory);
         return repository.save(newCategory);
     }

@@ -2,16 +2,16 @@ package com.ecommerce.ecommercejpa.order.dto;
 
 import java.util.List;
 
-import com.ecommerce.ecommercejpa.customer.CustomerModel;
+import com.ecommerce.ecommercejpa.customer.Customer;
 
 public class OrderRequest {
-    private CustomerModel customer;
+    private Customer customer;
     private List<Item> items;
 
-    public CustomerModel getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
-    public void setCustomer(CustomerModel customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
     public List<Item> getItems() {

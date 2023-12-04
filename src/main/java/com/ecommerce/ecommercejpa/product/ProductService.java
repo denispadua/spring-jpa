@@ -16,22 +16,22 @@ public class ProductService implements ProductServiceInterface{
         this.repository = repository;
     }
     @Override
-    public List<ProductModel> getProducts(){
+    public List<Product> getProducts(){
         return repository.findAll();
     }
     @Override
-    public ProductModel getProductById(Long id) throws NoSuchElementException{
+    public Product getProductById(Long id) throws NoSuchElementException{
         return repository.findById(id).get();
     }
     @Override
-    public ProductModel createProduct(ProductModel productJson){
-        ProductModel newProduct = new ProductModel();
+    public Product createProduct(Product productJson){
+        Product newProduct = new Product();
         BeanUtils.copyProperties(productJson, newProduct);
         return repository.save(newProduct);
     }
 
-    public ProductModel updateProductQuantity(Long id, Integer quantity){
-        Optional<ProductModel> p = repository.findById(id);
+    public Product updateProductQuantity(Long id, Integer quantity){
+        Optional<Product> p = repository.findById(id);
         if(p.isPresent()){
             p.get().setQuantity(p.get().getQuantity() - quantity);
             return repository.save(p.get());

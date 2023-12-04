@@ -32,7 +32,7 @@ public class CustomerResource {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> createCustomer(@RequestBody CustomerModel customer){
+    public ResponseEntity<Object> createCustomer(@RequestBody Customer customer){
         return ResponseHandler.response(service.createCustomer(customer), HttpStatus.OK, null);
     }
 

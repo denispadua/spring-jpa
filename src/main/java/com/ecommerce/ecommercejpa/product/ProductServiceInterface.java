@@ -5,9 +5,9 @@ import java.util.NoSuchElementException;
 
 public interface ProductServiceInterface {
 
-    public List<ProductModel> getProducts();
+    public List<Product> getProducts();
 
-    public ProductModel getProductById(Long id) throws NoSuchElementException;
+    public Product getProductById(Long id) throws NoSuchElementException;
 
-    public ProductModel createProduct(ProductModel productJson);
+    public Product createProduct(Product productJson);
 }

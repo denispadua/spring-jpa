@@ -18,8 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ecommerce.ecommercejpa.Role.Role;
 import com.ecommerce.ecommercejpa.Role.RoleEnum;
-import com.ecommerce.ecommercejpa.Role.RoleModel;
 import com.ecommerce.ecommercejpa.customer.dto.CustomerResponse;
 
 @Service
@@ -34,21 +34,21 @@ public class CustomerService implements  UserDetailsService{
         this.enconder = enconder;
     }
 
-    public CustomerModel getCustomerByCpf(String cpf){
-        Optional<CustomerModel> c = repository.findByCpf(cpf);
+    public Customer getCustomerByCpf(String cpf){
+        Optional<Customer> c = repository.findByCpf(cpf);
         if(c.isPresent()){
             return c.get();
         }
         throw new NoSuchElementException("Customer not found");
     }
 
-    public CustomerResponse createCustomer(CustomerModel customer){
-        Optional<CustomerModel> c = repository.findByCpf(customer.getCpf());
+    public CustomerResponse createCustomer(Customer customer){
+        Optional<Customer> c = repository.findByCpf(customer.getCpf());
         if(c.isEmpty()){
-            CustomerModel newCustomer = new CustomerModel();
+            Customer newCustomer = new Customer();
             BeanUtils.copyProperties(customer, newCustomer);
             customer.getRoles().forEach(role ->{
-                newCustomer.getRole().add(new RoleModel(RoleEnum.valueOf(role.toUpperCase()).getValue(), role));
+                newCustomer.getRole().add(new Role(RoleEnum.valueOf(role.toUpperCase()).getValue(), role));
             });
             newCustomer.setPassword(this.encryptPassword(newCustomer.getPassword()));
             return this.customerDataToResponse(repository.save(newCustomer));
@@ -57,7 +57,7 @@ public class CustomerService implements  UserDetailsService{
     }
 
     public String login(String email){
-        Optional<CustomerModel> customer = repository.findByEmail(email);
+        Optional<Customer> customer = repository.findByEmail(email);
         if(customer.isPresent()){
             return "TOKEN XXXXX";
         }
@@ -68,7 +68,7 @@ public class CustomerService implements  UserDetailsService{
         return enconder.encode(password);
     }
 
-    public CustomerResponse customerDataToResponse(CustomerModel customerData){
+    public CustomerResponse customerDataToResponse(Customer customerData){
         CustomerResponse customerResponse = new CustomerResponse();
         BeanUtils.copyProperties(customerData, customerResponse);
         return customerResponse;
@@ -76,8 +76,8 @@ public class CustomerService implements  UserDetailsService{
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<CustomerModel> user = repository.findByEmail(email);
-        CustomerModel c = user.get();
+        Optional<Customer> user = repository.findByEmail(email);
+        Customer c = user.get();
         List<GrantedAuthority> authorities = c.getRole().stream().map(role->
             new SimpleGrantedAuthority(role.getName())
         ).collect(Collectors.toList());

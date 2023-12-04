@@ -2,17 +2,17 @@ package com.ecommerce.ecommercejpa.order.dto;
 
 import java.math.BigDecimal;
 
-import com.ecommerce.ecommercejpa.product.ProductModel;
+import com.ecommerce.ecommercejpa.product.Product;
 
 public class Item {
-    private ProductModel product;
+    private Product product;
     private Integer quantity;
     private BigDecimal price;
 
-    public ProductModel getProduct() {
+    public Product getProduct() {
         return product;
     }
-    public void setProduct(ProductModel product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
     public Integer getQuantity() {

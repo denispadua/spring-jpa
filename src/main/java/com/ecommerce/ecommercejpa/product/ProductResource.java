@@ -41,7 +41,7 @@ public class ProductResource {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> createProduct(@RequestBody @Valid ProductModel jsonProduct){
+    public ResponseEntity<Object> createProduct(@RequestBody @Valid Product jsonProduct){
         try {
             return ResponseHandler.response(service.createProduct(jsonProduct), HttpStatus.CREATED, null);
         } catch (Exception e) {

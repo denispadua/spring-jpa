@@ -5,9 +5,9 @@ import java.util.NoSuchElementException;
 
 public interface CategoryServiceInterface {
     
-    public List<CategoryModel> getCategories();
+    public List<Category> getCategories();
 
-    public CategoryModel getCategoryById(Long id) throws NoSuchElementException;
+    public Category getCategoryById(Long id) throws NoSuchElementException;
 
-    public CategoryModel createCategory(CategoryModel categoryJson);
+    public Category createCategory(Category categoryJson);
 }

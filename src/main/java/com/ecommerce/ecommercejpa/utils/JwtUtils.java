@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.ecommerce.ecommercejpa.config.JwtSecretService;
-import com.ecommerce.ecommercejpa.customer.CustomerModel;
+import com.ecommerce.ecommercejpa.customer.Customer;
 
 @Component
 public class JwtUtils {
@@ -19,7 +19,7 @@ public class JwtUtils {
         
         public String generateJwtToken(Authentication authentication) {
 
-        CustomerModel userPrincipal = (CustomerModel) authentication.getPrincipal();
+        Customer userPrincipal = (Customer) authentication.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getJwtSecret());
         Date createdDate = new Date();
         return JWT.create()

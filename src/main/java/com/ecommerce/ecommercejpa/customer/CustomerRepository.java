@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.springframework.data.repository.ListCrudRepository;
 
 
-public interface CustomerRepository extends ListCrudRepository<CustomerModel, Long>{
+public interface CustomerRepository extends ListCrudRepository<Customer, Long>{
 
-    Optional<CustomerModel> findByCpf(String cpf);
+    Optional<Customer> findByCpf(String cpf);
 
-    Optional<CustomerModel> findByEmail(String email);
+    Optional<Customer> findByEmail(String email);
 
-    Optional<CustomerModel> findByUsername(String username);
+    Optional<Customer> findByUsername(String username);
 }

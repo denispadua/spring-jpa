@@ -36,7 +36,7 @@ public class CategoryResource {
     }
     @PostMapping("/")
     @PreAuthorize("hasRole('user')")
-    public ResponseEntity<Object> createProduct(@RequestBody @Valid CategoryModel jsonProduct){
+    public ResponseEntity<Object> createProduct(@RequestBody @Valid Category jsonProduct){
         return ResponseHandler.response(service.createCategory(jsonProduct), HttpStatus.CREATED, null);
     }
 }

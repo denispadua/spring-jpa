@@ -27,7 +27,7 @@ public class OrderResource {
     
     @GetMapping("/")
     public ResponseEntity<Object> getOrders(){
-        List<OrderModel> orders = repository.findAll();
+        List<Order> orders = repository.findAll();
         return ResponseHandler.response(orders, HttpStatus.OK, null);
     }
 
