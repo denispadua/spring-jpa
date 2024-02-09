@@ -43,6 +43,14 @@ public class CustomerService implements  UserDetailsService{
         return c.get();
     }
 
+    public Customer getCustomerByUsername(String username){
+        Optional<Customer> c = repository.findByUsername(username);
+        if(c.isEmpty()){
+            throw new NoSuchElementException("Customer not found");
+        }
+        return c.get();
+    }
+
     public CustomerResponse createCustomer(CustomerRegisterRequest customer){
         Optional<Customer> c = repository.findByCpf(customer.getCpf());
 
