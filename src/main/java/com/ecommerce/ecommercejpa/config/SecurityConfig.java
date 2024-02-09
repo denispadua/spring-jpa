@@ -54,8 +54,8 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> 
           auth.requestMatchers("/customer/**").permitAll()
-          .requestMatchers(HttpMethod.POST,"/category/**").hasAuthority("user")
-              .anyRequest().authenticated()
+          .requestMatchers(HttpMethod.POST).hasAuthority("MOD")
+            .anyRequest().authenticated()
         );
 
         http.authenticationProvider(authenticationProvider());
