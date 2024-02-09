@@ -1,5 +1,7 @@
 package com.ecommerce.ecommercejpa.order;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 
@@ -13,5 +15,6 @@ public interface OrderRepository extends ListCrudRepository<Order, Long>{
     @Transactional
     @Query("update Product P SET P.quantity = :quantity where P.id = :productId")
     Void updateProductQuantity(Integer quantity, Long productId);
-
+    
+    List<Order> findAllOrderByCustomerId(Long id);
 }
