@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.ecommercejpa.Role.Role;
 import com.ecommerce.ecommercejpa.Role.RoleEnum;
-import com.ecommerce.ecommercejpa.customer.dto.CustomerRegisterRequest;
+import com.ecommerce.ecommercejpa.customer.dto.CustomerRegisterRequestDto;
 import com.ecommerce.ecommercejpa.customer.dto.CustomerResponse;
 
 @Service
@@ -51,7 +51,7 @@ public class CustomerService implements  UserDetailsService{
         return c.get();
     }
 
-    public CustomerResponse createCustomer(CustomerRegisterRequest customer){
+    public CustomerResponse createCustomer(CustomerRegisterRequestDto customer){
         Optional<Customer> c = repository.findByCpf(customer.getCpf());
 
         if(c.isPresent()){

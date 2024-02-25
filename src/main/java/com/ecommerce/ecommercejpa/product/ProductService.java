@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.ecommercejpa.product.dto.ProductRequestDto;
+
 @Service
 public class ProductService implements ProductServiceInterface{
     
@@ -24,9 +26,9 @@ public class ProductService implements ProductServiceInterface{
         return repository.findById(id).get();
     }
     @Override
-    public Product createProduct(Product productJson){
+    public Product createProduct(ProductRequestDto request){
         Product newProduct = new Product();
-        BeanUtils.copyProperties(productJson, newProduct);
+        BeanUtils.copyProperties(request, newProduct);
         return repository.save(newProduct);
     }
 

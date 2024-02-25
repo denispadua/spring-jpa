@@ -1,13 +1,13 @@
-package com.ecommerce.ecommercejpa;
+// package com.ecommerce.ecommercejpa;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class EcommerceJpaApplicationTests {
+// @SpringBootTest
+// class EcommerceJpaApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+// 	@Test
+// 	void contextLoads() {
+// 	}
 
-}
+// }

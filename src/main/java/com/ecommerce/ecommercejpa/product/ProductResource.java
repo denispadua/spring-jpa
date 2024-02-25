@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.ecommerce.ecommercejpa.product.dto.ProductRequestDto;
 import com.ecommerce.ecommercejpa.utils.ResponseHandler;
 
 import jakarta.validation.Valid;
@@ -41,9 +42,9 @@ public class ProductResource {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> createProduct(@RequestBody @Valid Product jsonProduct){
+    public ResponseEntity<Object> createProduct(@RequestBody @Valid ProductRequestDto request){
         try {
-            return ResponseHandler.response(service.createProduct(jsonProduct), HttpStatus.CREATED, null);
+            return ResponseHandler.response(service.createProduct(request), HttpStatus.CREATED, null);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unable to create a user");
         }

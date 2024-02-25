@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ecommerce.ecommercejpa.customer.dto.CustomerLoginRequest;
-import com.ecommerce.ecommercejpa.customer.dto.CustomerRegisterRequest;
+import com.ecommerce.ecommercejpa.customer.dto.CustomerLoginRequestDto;
+import com.ecommerce.ecommercejpa.customer.dto.CustomerRegisterRequestDto;
 import com.ecommerce.ecommercejpa.utils.JwtUtils;
 import com.ecommerce.ecommercejpa.utils.ResponseHandler;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/customer")
@@ -31,14 +33,14 @@ public class CustomerResource {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> createCustomer(@RequestBody CustomerRegisterRequest customer){
-        return ResponseHandler.response(service.createCustomer(customer), HttpStatus.OK, null);
+    public ResponseEntity<Object> createCustomer(@RequestBody @Valid CustomerRegisterRequestDto request){
+        return ResponseHandler.response(service.createCustomer(request), HttpStatus.OK, null);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody CustomerLoginRequest customer){
+    public ResponseEntity<Object> login(@RequestBody @Valid CustomerLoginRequestDto request){
         Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(customer.getUsername(), customer.getPassword()));
+            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return ResponseHandler.response(jwtUtils.generateJwtToken(authentication), HttpStatus.OK, null);

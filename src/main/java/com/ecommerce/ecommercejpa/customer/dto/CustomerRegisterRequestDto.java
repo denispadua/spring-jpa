@@ -3,7 +3,7 @@ package com.ecommerce.ecommercejpa.customer.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CustomerRegisterRequest {
+public class CustomerRegisterRequestDto {
 
     private String cpf;
     private String fullName;

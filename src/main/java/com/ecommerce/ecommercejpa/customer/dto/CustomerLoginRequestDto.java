@@ -1,6 +1,6 @@
 package com.ecommerce.ecommercejpa.customer.dto;
 
-public class CustomerLoginRequest{
+public class CustomerLoginRequestDto{
     private String username;
     private String password;
     

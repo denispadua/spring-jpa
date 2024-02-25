@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ecommerce.ecommercejpa.category.dto.CategoryRequestDto;
 import com.ecommerce.ecommercejpa.utils.ResponseHandler;
 
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class CategoryResource {
         return ResponseHandler.response(service.getCategoryById(id), HttpStatus.OK, null);
     }
     @PostMapping("/")
-    public ResponseEntity<Object> createProduct(@RequestBody @Valid Category jsonProduct){
-        return ResponseHandler.response(service.createCategory(jsonProduct), HttpStatus.CREATED, null);
+    public ResponseEntity<Object> createProduct(@RequestBody @Valid CategoryRequestDto request){
+        return ResponseHandler.response(service.createCategory(request), HttpStatus.CREATED, null);
     }
 }
